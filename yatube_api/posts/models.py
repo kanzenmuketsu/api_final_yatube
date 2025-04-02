@@ -4,6 +4,27 @@ from django.db import models
 User = get_user_model()
 
 
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='fllwr'
+    )
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='fllwng'
+    )
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(
+                fields=('user', 'following'),
+                name='unique'
+            ),
+        )
+
+
 class Group(models.Model):
     title = models.CharField(max_length=200)
     slug = models.CharField(max_length=50)
